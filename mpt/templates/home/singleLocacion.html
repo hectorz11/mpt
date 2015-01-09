@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %} Locacion {{ Locacion.descripcion }} {% endblock %}
+{% block content %}
+
+<h1> {{ Locacion.descripcion }} </h1><br>
+<!--<img src="/media/{{ producto.imagen }}" width="150px" height="150px"/>-->
+<p><i> {{ Locacion.descripcion }} </i></p>
+<p> S/.{{ Locacion.control }} </p>
+<!--<p> Cantidad en Existencia:<i> {{ Locacion.stock }} Unidades </i></p>-->
+<!--<h4>Categorias</h4>
+{% for cat in categorias %}
+	<span class="label label-info">{{ cat.descripcion }}</span>
+{% endfor %}
+<br><br>
+{% if Locacion.stock > 0 %}
+	<a href="#" class="btn btn-primary">Comprar Producto</a>
+{% endif %}-->
+<a href="javascript:window.history.go(-1);" class="btn btn-primary">Regresar a la Lista</a>
+
+{% endblock %}

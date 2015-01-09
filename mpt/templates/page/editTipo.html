@@ -1,0 +1,20 @@
+{% extends 'base.html'%}
+{% block title %} Modificar Tipo {% endblock %}
+{% block content %}
+
+<div class="row">
+	<div class="span6">
+	<form action="." method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<button type="submit" class="btn btn-small btn-primary">Guardar</button>
+		<button type="reset" class="btn btn-small btn-primary">Limpiar</button>
+	</form>
+	<a href="/tipos/page/1/">Regresar a la lista ltipos</a>
+	</div>
+</div>
+<br>
+	{{ informacion }}
+<br>
+
+{% endblock %}

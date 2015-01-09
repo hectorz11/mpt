@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block title %} Lista de Equipos {% endblock %}
+{%block content %}
+
+
+<!--IniciaModal-->
+ <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+    <h3 id="myModalLabel">Eliminar Equipo</h3>
+    </div>
+    <div class="modal-body">
+    <p>¿Realmente desea eliminar el equipo <span id="modal_name"></span>?</p>
+    </div>
+    <div class="modal-footer">
+        <form method="post" id="frmEliminar">
+            {% csrf_token %}
+            <input type="hidden" id="modal_idEquipo" name="equipo_id">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+    </div>
+</div>
+<!--EndModal-->
+
+
+
+<h3>Catalogo de Equipos:</h3>
+{% if user.is_authenticated %}
+<a href="{% url "vista_agregar_equipo" %}" class="btn"><i class="icon-plus"></i> Nuevo</a><br>
+{% endif %}
+<br>
+{% if equipos %}
+    <table class="table table-hover" id="tabla_equipos">
+    	<thead>
+                <tr>
+                  <th>Codigo Patrimonial</th>
+                  <th>Tipo</th>
+                  <th>Estado</th>
+                  <th>Marca</th>
+                  <th>Serie</th>
+                </tr>
+        </thead>
+    {% for p in equipos %}
+     	<tbody>
+     		<tr id="tr{{p.id}}">
+     			<td>{{ p.codigo }}</td>
+				<td>{{ p.tipo }}</td>
+				<td>{{ p.estado }}</td>
+				<td>{{ p.marca }}</td>
+				<td>{{ p.serial }}</td>
+				<td><a class="btn" href="/equipo/{{p.id}}/"><i class="icon-search"></i>   Ver</a></td>
+				{% if user.is_authenticated and user.is_staff %}
+					<td><a class="btn" href="/edit/equipo/{{p.id}}/"><i class="icon-pencil"></i>  Editar </a></td>
+					<td><a href="#myModal" role="button" class="btn btn-danger delete" data-toggle="modal" id="{{p.id}}" data-name="{{p.tipo}}"><i class="icon-trash icon-white"></i>Eliminar</a></td>
+				{% endif %}				
+			</tr>
+		</tbody>
+	{% endfor %}
+    </table>
+	
+{% else %}
+	<h2>No existen equipos activos en la MPT :( </h2>
+{% endif %}
+<br>
+{% if equipos %}
+    <div class="pagination">
+    <ul>
+		<li><a href="/equipos/page/1"> << </a></li>
+	{% if equipos.has_previous %}
+		<li><a href="/equipos/page/{{equipos.previous_page_number }}/"> Prev </a></li>
+	{% else %}
+		<li><a href="#"> Prev </a></li>
+	{% endif %}
+	{% if equipos.has_next %}
+		<li><a href="/equipos/page/{{equipos.next_page_number }}/"> Next </a></li>
+	{% else %}
+		<li><a href="#"> Next </a></li>
+	{% endif %}
+		<li><a href="/equipos/page/{{equipos.paginator.num_pages }} "> >> </a><li>
+	</ul>
+	</div>
+	<h4> Página {{ equipos.number }} de {{ equipos.paginator.num_pages }}</h4>
+{% endif %}
+{% endblock %}
